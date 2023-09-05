@@ -9,6 +9,8 @@ const fileSchema = new mongoose.Schema({
     path: { type :String },
     link: { type :String },
     recipient: { type: String },
+    message: { type: String },
+    password: { type: String },
     createdAt: {
         type: Date,
         default: Date.now,

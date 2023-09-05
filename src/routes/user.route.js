@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userCtrl = require('../controllers/user.controller');
 const { isAuth } = require('../middleware/auth');
+const { uploadMultipleFiles } = require("../middleware/upload");
 
 
 /**
@@ -99,6 +100,57 @@ router.post("/auth/logout", userCtrl.logout);
  *
  */
 router.post("/users/create-account", isAuth, userCtrl.createAccount);
+
+/**
+ * @swagger
+ *  /api/file/upload:
+ *      post:
+ *          summary: User uploads a file to send
+ *          tags:
+ *              - Files
+ *          security:
+ *              - bearerAuth: []
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              recipient:
+ *                                  type: string
+ *                                  required: true
+ *                              message:
+ *                                  type: string
+ *                                  required: false
+ *                              password:
+ *                                  type: string
+ *                                  required: false
+ *                              files:
+ *                                  type: array
+ *                                  items:
+ *                                      type: string
+ *                                      format: binary
+ *                                      required: true
+ *                          example:
+ *                              recipient: "john@email.com"
+ *                              message: "Your message goes here"
+ *                              password: "Test_1234"
+ *          responses:
+ *              '201':
+ *                description: >
+ *                    Account successfully created
+ *              '400':
+ *                description: >
+ *                    Invalid email ||
+ *                    Invalid role ||
+ *                    The email you entered is already taken
+ *              '500':
+ *                  description: >
+ *                    Server Error || Account creation failure
+ *
+ */
+router.post("/file/upload", isAuth, uploadMultipleFiles("files"), userCtrl.uploadFile);
 
 
 module.exports = router;
