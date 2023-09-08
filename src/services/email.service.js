@@ -15,13 +15,14 @@ if (["development", "test"].includes(process.env.NODE_ENV) === false) {
     );
 }
 
-const sendEmail = async ({ from, to, subject, text }) => {
+const sendEmail = async ({ to, subject, text }) => {
+    var from = config.emailConfig.from;
     if (["development", "test"].includes(process.env.NODE_ENV) === false) {
       await transport.sendMail({ from, to, subject, text, html: text });
     }
 };
 
-exports.sendCodeEmail = async ({ from, to, subject, code, description }) => {
-    const html = mailTemplate(subject, code, description);
-    await sendEmail({ from, to, subject, text: html });
+exports.sendLink = async ({ to, subject, description }) => {
+    const html = mailTemplate(subject, description);
+    await sendEmail({ to, subject, text: html });
 }

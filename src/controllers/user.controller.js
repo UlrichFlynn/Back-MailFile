@@ -119,22 +119,3 @@ exports.createAccount = async (req, res) => {
         });
     }
 }
-
-exports.uploadFile = async (req, res) => {
-    try {
-        let files = req.files;
-        if (files.length() == 0) {
-            return res.status(400).json({
-                type: "error",
-                message: "Please choose a file to send"
-            });
-        }
-    }
-    catch(error) {
-        return res.status(500).json({
-            type: "error",
-            message: "Server Error",
-            error: error.stack
-        });
-    }
-}

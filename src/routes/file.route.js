@@ -1,90 +1,45 @@
 const express = require('express');
 const router = express.Router();
-const { userCtrl } = require('../controllers');
+const { fileCtrl } = require('../controllers');
 const { isAuth } = require('../middleware/auth');
 const { uploadMultipleFiles } = require("../middleware/upload");
 
 
 /**
  * @swagger
- *  /api/users/auth/login:
+ *  /api/files/upload:
  *      post:
- *          summary: User logs into the platform
+ *          summary: User uploads a file to send
  *          tags:
- *              - Auth
- *          requestBody:
- *              required: true
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              email:
- *                                  type: string
- *                                  required: true
- *                              password:
- *                                  type: string
- *                                  required: true
- *                          example:
- *                              email: "john@email.com"
- *                              password: "Test_1234"
- *          responses:
- *              '200':
- *                description: >
- *                    Login successfull
- *              '400':
- *                description: >
- *                    Invalid email || Password does not match
- *              '404':
- *                description: >
- *                    No user found with this email
- *              '500':
- *                  description: >
- *                    Error generating token || Token not saved || Server Error
- *
- */
-router.post("/auth/login", userCtrl.login);
-
-/**
- * @swagger
- *  /api/users/auth/logout:
- *      post:
- *          summary: User logs out of the platform
- *          tags:
- *              - Auth
- *          responses:
- *              '200':
- *                description: >
- *                    Logout successfull
- *
- */
-router.post("/auth/logout", userCtrl.logout);
-
-/**
- * @swagger
- *  /api/users/create-account:
- *      post:
- *          summary: Creation of a user account
- *          tags:
- *              - Users
+ *              - Files
  *          security:
  *              - bearerAuth: []
  *          requestBody:
  *              required: true
  *              content:
- *                  application/json:
+ *                  multipart/form-data:
  *                      schema:
  *                          type: object
  *                          properties:
- *                              email:
+ *                              recipient:
  *                                  type: string
  *                                  required: true
- *                              role:
+ *                              message:
  *                                  type: string
- *                                  required: true
+ *                                  required: false
+ *                              password:
+ *                                  type: string
+ *                                  required: false
+ *                              files:
+ *                                  type: array
+ *                                  items:
+ *                                      type: string
+ *                                      format: binary
+ *                                      required: true
  *                          example:
- *                              email: "john@email.com"
- *                              role: "USER"
+ *                              recipient: "john@email.com"
+ *                              message: "Your message goes here"
+ *                              password: "Test_1234"
  *          responses:
  *              '201':
  *                description: >
@@ -99,7 +54,50 @@ router.post("/auth/logout", userCtrl.logout);
  *                    Server Error || Account creation failure
  *
  */
-router.post("/users/create-account", isAuth, userCtrl.createAccount);
+router.post("/upload", isAuth, uploadMultipleFiles("files"), fileCtrl.uploadFile);
+
+/**
+ * @swagger
+ *  /api/files/download:
+ *      post:
+ *          summary: User uploads a file to send
+ *          tags:
+ *              - Files
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              id:
+ *                                  type: string
+ *                                  required: true
+ *                              path:
+ *                                  type: string
+ *                                  required: true
+ *                              password:
+ *                                  type: string
+ *                                  required: true
+ *                          example:
+ *                              id: ""
+ *                              path: ""
+ *                              password: ""
+ *          responses:
+ *              '201':
+ *                description: >
+ *                    Account successfully created
+ *              '400':
+ *                description: >
+ *                    Invalid email ||
+ *                    Invalid role ||
+ *                    The email you entered is already taken
+ *              '500':
+ *                  description: >
+ *                    Server Error || Account creation failure
+ *
+ */
+router.post("/download", fileCtrl.downloadFile);
 
 
 module.exports = router;

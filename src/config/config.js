@@ -12,5 +12,6 @@ module.exports = {
       },
       tls: { rejectUnauthorized: false }
     },
+    from: process.env.EMAIL_FROM,
   }
 }
