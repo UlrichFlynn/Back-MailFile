@@ -5,6 +5,7 @@ exports.isAuth = (req, res, next) => {
       const token = req.headers.authorization ? req.headers.authorization.split(" ")[1] : "";
       if (!token) {
         return res.status(400).json({
+          type: "error",
             message: "A token is required for authentication"
         });
       }
@@ -13,6 +14,7 @@ exports.isAuth = (req, res, next) => {
       return next();
     } catch (error) {
       res.status(401).json({
+        type: "error",
         message : 'Invalid Token',
         error: error.stack
       });

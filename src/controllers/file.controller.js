@@ -34,7 +34,7 @@ exports.uploadFile = async (req, res) => {
 
         files = files.map((file) => {
             let path = file.destination.split('public')[1] + '/' + file.filename;
-            let link = `http://localhost:7020/api/files/download?id=${newUpload._id}&path=${path}`;
+            let link = `http://localhost:3000/download?id=${newUpload._id}&path=${path}`;
             let data = {
                 name: file.originalname,
                 path,
@@ -105,6 +105,14 @@ exports.downloadFile = async (req, res) => {
             }
         }
         let file = data.files.find(x => x.path.toString() === path.toString());
+        if(file.numberOfDownloads >= 5) {
+            return res.status(400).json({
+                type: "error",
+                message: "This file has reached the number of download limit" 
+            });
+        } 
+        file.numberOfDownloads++;
+        await data.save();
   
         http.get(`http://localhost:7020/api${path}`, (response) => {
             // Image will be stored at this path
@@ -121,6 +129,32 @@ exports.downloadFile = async (req, res) => {
             });
         });
 
+    }
+    catch(error) {
+        return res.status(500).json({
+            type: "error",
+            message: "Une erreur s'est produite",
+            error: error.stack
+        });   
+    }
+}
+
+exports.getById = async (req, res) => {
+    try {
+        let { id } = req.params;
+
+        let file = await fileService.getById(id);
+        if (!file) {
+            return res.status(404).json({
+                type:"error",
+                message: "Fichier introuvable"
+            });
+        }
+
+        return res.status(200).json({
+            type: "success",
+            data: file
+        });
     }
     catch(error) {
         return res.status(500).json({

@@ -7,6 +7,31 @@ const { uploadMultipleFiles } = require("../middleware/upload");
 
 /**
  * @swagger
+ *  /api/files/{id}:
+ *      get:
+ *          summary: Get file by ID
+ *          tags:
+ *              - Files
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                schema:
+ *                  type: string
+ *                  required: true
+ *                description: file ID
+ *          responses:
+ *              '404':
+ *                description: >
+ *                    File not found
+ *              '500':
+ *                  description: >
+ *                    Server Error
+ *
+ */
+router.get("/:id", fileCtrl.getById);
+
+/**
+ * @swagger
  *  /api/files/upload:
  *      post:
  *          summary: User uploads a file to send
@@ -41,17 +66,12 @@ const { uploadMultipleFiles } = require("../middleware/upload");
  *                              message: "Your message goes here"
  *                              password: "Test_1234"
  *          responses:
- *              '201':
+ *              '200':
  *                description: >
- *                    Account successfully created
- *              '400':
- *                description: >
- *                    Invalid email ||
- *                    Invalid role ||
- *                    The email you entered is already taken
+ *                    File sent successfully
  *              '500':
  *                  description: >
- *                    Server Error || Account creation failure
+ *                    Server Error
  *
  */
 router.post("/upload", isAuth, uploadMultipleFiles("files"), fileCtrl.uploadFile);
@@ -84,17 +104,12 @@ router.post("/upload", isAuth, uploadMultipleFiles("files"), fileCtrl.uploadFile
  *                              path: ""
  *                              password: ""
  *          responses:
- *              '201':
+ *              '200':
  *                description: >
- *                    Account successfully created
- *              '400':
- *                description: >
- *                    Invalid email ||
- *                    Invalid role ||
- *                    The email you entered is already taken
+ *                    File downloaded succesfully
  *              '500':
  *                  description: >
- *                    Server Error || Account creation failure
+ *                    Server Error
  *
  */
 router.post("/download", fileCtrl.downloadFile);
