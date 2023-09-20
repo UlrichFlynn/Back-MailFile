@@ -66,4 +66,4 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 ## Contact
 
-For any inquiries or feedback, please contact [your-name](mailto:your-email@example.com).
+For any inquiries or feedback, please contact Ndeloko Ulrich(mailto:ulrichflynn9@gmail.com).

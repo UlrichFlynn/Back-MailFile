@@ -113,7 +113,7 @@ exports.downloadFile = async (req, res) => {
         file.numberOfDownloads++;
         await data.save();
   
-        http.get(`http://localhost:7020/api${path}`, (response) => {
+        http.get(`http://localhost:${process.env.PORT}/api${path}`, (response) => {
             // Image will be stored at this path
             const storagePath = __dirname.split('/Documents')[0] + `/Downloads/${file.name}`;
             const filePath = fs.createWriteStream(storagePath);
