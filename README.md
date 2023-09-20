@@ -33,13 +33,13 @@ To run the project, use the following command:
 npm start
 ```
 
-This will start the application and you can access the API documentation by opening your web browser and navigating to `http://localhost:${PORT}/api-docs`.
+This will start the application and you can access the API documentation by opening your web browser and navigating to `http://localhost:${process.env.PORT}/api-docs`.
 
 ## Configuration
 
 You can configure the project by setting up the environment variables as follows:
 1. Creating a .env file in the root directory.
-2. Copy the variables in the .env.example file and paste them in the .env file.
+2. Copy the variables in the .env.example file and paste them into the .env file.
 3. Give your values to those variables.
 
 ## Deployment
