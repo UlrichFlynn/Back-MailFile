@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const userCtrl = require('../controllers/user.controller');
+const { userCtrl } = require('../controllers');
 const { isAuth } = require('../middleware/auth');
+const { uploadMultipleFiles } = require("../middleware/upload");
 
 
 /**
  * @swagger
- *  /api/auth/login:
+ *  /api/users/auth/login:
  *      post:
  *          summary: User logs into the platform
  *          tags:
@@ -46,7 +47,7 @@ router.post("/auth/login", userCtrl.login);
 
 /**
  * @swagger
- *  /api/auth/logout:
+ *  /api/users/auth/logout:
  *      post:
  *          summary: User logs out of the platform
  *          tags:
@@ -98,7 +99,7 @@ router.post("/auth/logout", userCtrl.logout);
  *                    Server Error || Account creation failure
  *
  */
-router.post("/users/create-account", isAuth, userCtrl.createAccount);
+router.post("/create-account", isAuth, userCtrl.createAccount);
 
 
 module.exports = router;

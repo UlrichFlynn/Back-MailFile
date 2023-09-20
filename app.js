@@ -4,12 +4,12 @@ const session = require('express-session');
 const app = express();
 const api_doc = require('./api-doc/doc');
 
-const routes = require("./src/routes/user.route");
+const routes = require("./src/routes");
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
     next();
 });
 app.use(

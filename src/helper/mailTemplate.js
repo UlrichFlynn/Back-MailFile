@@ -1,4 +1,4 @@
-const mailTemplate = (title, content, description) => {
+const mailTemplate = (title, description) => {
     const html = `<html lang="en-US">
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
@@ -14,17 +14,10 @@ const mailTemplate = (title, content, description) => {
         style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;">
         <tr>
             <td>
-                <table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                <table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto; font-size: 1rem !important;" width="100%" border="0"
                     align="center" cellpadding="0" cellspacing="0">
                     <tr>
                         <td style="height:80px;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center;">
-                          <a href="" title="logo" target="_blank">
-                            <img width="60" src="" title="logo" alt="logo">
-                          </a>
-                        </td>
                     </tr>
                     <tr>
                         <td style="height:20px;">&nbsp;</td>
@@ -39,10 +32,8 @@ const mailTemplate = (title, content, description) => {
                                 <tr>
                                     <td style="padding:0 35px;">
                                         <h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:22px;font-family:'Rubik',sans-serif;">${description}</h1>
-                                        <span
-                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
                                         <p style="color:#455056; font-size:10px;line-height:24px; margin:0;">
-                                        <h2>${content}</h2>
+                                        
                                         </p>
                                         <!-- <a href="javascript:void(0);"
                                             style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Reset
@@ -59,7 +50,7 @@ const mailTemplate = (title, content, description) => {
                     </tr>
                     <tr>
                         <td style="text-align:center;">
-                            <p style="font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;">&copy; <strong>2023 iCareHome</strong></p>
+                            <p style="font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;">&copy; <strong>2023 MailFile</strong></p>
                         </td>
                     </tr>
                     <tr>

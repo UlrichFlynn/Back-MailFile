@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const shortUrl = require("node-url-shortener");
 
 exports.generateToken = (_id, email) => {
     try {
@@ -32,3 +33,15 @@ exports.generatePassword = () => {
     }
     return result;
 }
+
+exports.generateLink = async (path) => {
+    await shortUrl.short(path, function (err, url) {
+        if(err) console.log("ERR: ", err);
+        console.log(url);
+        return url;
+    });
+}
+
+// shortUrl.short("https://codeportal.in", function (err, url) {
+//     console.log(url);
+// });
