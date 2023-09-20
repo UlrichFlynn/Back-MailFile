@@ -1,7 +1,5 @@
 const bcrypt = require('bcrypt');
-const { generateLink } = require('../helper/utils');
 const { emailService, fileService } = require('../services');
-const shortUrl = require("node-url-shortener");
 const fs = require('fs');
 const http = require('http');
 
@@ -34,7 +32,7 @@ exports.uploadFile = async (req, res) => {
 
         files = files.map((file) => {
             let path = file.destination.split('public')[1] + '/' + file.filename;
-            let link = `http://localhost:3000/download?id=${newUpload._id}&path=${path}`;
+            let link = `http://localhost:3000/download/${newUpload._id}?path=${path}`;
             let data = {
                 name: file.originalname,
                 path,
@@ -46,7 +44,7 @@ exports.uploadFile = async (req, res) => {
         await fileService.update(newUpload._id, { files });
         
         files = files.map(file => {
-            return `${file.name}<br><a href="${file.link}" download="${file.name}">${file.link}</a><br>`;   
+            return `${file.name}<br><a href="${file.link}">${file.link}</a><br>`;   
         });
 
         let description = `<b>On vous a envoyer quelques fichiers</b><br><hr><br>Avec le message suivant:<br>${req.body.message}<br>Fichiers envoyer:<br>${files}<br><hr>`;
@@ -64,6 +62,7 @@ exports.uploadFile = async (req, res) => {
             description: descriptionToSender
         }
         await emailService.sendLink(emailToSenderData);
+        console.log("Mail file links: ", files);
 
         return res.status(200).json({
             type: "success",
@@ -108,7 +107,7 @@ exports.downloadFile = async (req, res) => {
         if(file.numberOfDownloads >= 5) {
             return res.status(400).json({
                 type: "error",
-                message: "This file has reached the number of download limit" 
+                message: "This file has reached the maximum number of download limit" 
             });
         } 
         file.numberOfDownloads++;
@@ -154,6 +153,39 @@ exports.getById = async (req, res) => {
         return res.status(200).json({
             type: "success",
             data: file
+        });
+    }
+    catch(error) {
+        return res.status(500).json({
+            type: "error",
+            message: "Une erreur s'est produite",
+            error: error.stack
+        });   
+    }
+}
+
+exports.getAll = async (req, res) => {
+    try {
+        let files= [];
+        let data = await fileService.getAll();
+
+        for(let j = 0; j < data.length; j++) {
+            let item = data[j];
+            for(let i = 0; i < item.files.length; i++) {
+                let file = item.files[i];
+                files.push({
+                    sender: item.userId.email,
+                    recipient: item.recipient,
+                    message: item.message,
+                    fileName: file.name,
+                    numberOfDownloads: file.numberOfDownloads
+                });
+            }
+        }
+
+        return res.status(200).json({
+            type: "success",
+            data: files
         });
     }
     catch(error) {

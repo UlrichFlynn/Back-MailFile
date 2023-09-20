@@ -90,20 +90,18 @@ exports.createAccount = async (req, res) => {
         if (user) {
             console.log("PASSWORD: ", password);
             const emailData = {
-                from: req.user.email,
                 to: user.email,
                 subject: "Welcome on MailFile",
-                code: "",
                 description: `Your account has been successfully created on MailFile. Use the password below to login.<br>Password: <b>${password}</b>`
             }
 
+            emailService.sendLink(emailData);
+            
             res.status(201).json({
                 type: "success",
                 message: "Account successfully created",
                 data: user
             });
-
-            emailService.sendCodeEmail(emailData);
         }
         else {
             return res.status(500).json({

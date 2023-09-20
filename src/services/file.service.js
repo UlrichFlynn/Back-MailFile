@@ -11,3 +11,9 @@ exports.update = async (id, data) => {
 exports.getById = async(id) => {
     return await File.findById(id);
 }
+
+exports.getAll = async() => {
+    return await File.find()
+    .populate("userId")
+    .sort("-createdAt");
+}

@@ -13,7 +13,7 @@ const fileDetailsSchema = new mongoose.Schema({
 const fileSchema = new mongoose.Schema({
     userId: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "user"
+        ref: "User"
     },
     recipient: { type: String },
     password: { type: String },

@@ -32,6 +32,26 @@ router.get("/:id", fileCtrl.getById);
 
 /**
  * @swagger
+ *  /api/files:
+ *      get:
+ *          summary: Get all files
+ *          tags:
+ *              - Files
+ *          security:
+ *              - bearerAuth: []
+ *          responses:
+ *              '200':
+ *                description: >
+ *                    Return an array of file objects
+ *              '500':
+ *                  description: >
+ *                    Server Error
+ *
+ */
+router.get("/", isAuth, fileCtrl.getAll);
+
+/**
+ * @swagger
  *  /api/files/upload:
  *      post:
  *          summary: User uploads a file to send

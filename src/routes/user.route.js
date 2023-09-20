@@ -99,7 +99,7 @@ router.post("/auth/logout", userCtrl.logout);
  *                    Server Error || Account creation failure
  *
  */
-router.post("/users/create-account", isAuth, userCtrl.createAccount);
+router.post("/create-account", isAuth, userCtrl.createAccount);
 
 
 module.exports = router;
